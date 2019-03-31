@@ -177,7 +177,7 @@ namespace Zeroconf
 
         inline bool Send(int fd, const std::vector<uint8_t>& data)
         {
-            sockaddr_in broadcastAddr = {0};
+            sockaddr_in broadcastAddr = {};
             broadcastAddr.sin_family = AF_INET;
             broadcastAddr.sin_port = htons(5353);
             broadcastAddr.sin_addr.s_addr = INADDR_BROADCAST;
@@ -214,7 +214,7 @@ namespace Zeroconf
                 FD_ZERO(&fds);
                 FD_SET(fd, &fds);
 
-                timeval tv = {0};
+                timeval tv = {};
                 tv.tv_sec = static_cast<long>(scanTime);
 
                 int st = select(fd+1, &fds, nullptr, nullptr, &tv);
@@ -312,7 +312,7 @@ namespace Zeroconf
                     return false;
                 }
 
-                for (auto i = 0; i < cb; i++)
+                for (size_t i = 0; i < cb; i++)
                     is.ignore(); // qname
         
                 is.read(reinterpret_cast<char*>(&u16), 2); // qtype
@@ -328,7 +328,7 @@ namespace Zeroconf
                         break;
                     is.exceptions(Flags);
 
-                    mdns_record rr = {0};
+                    mdns_record rr = {};
                     rr.pos = static_cast<size_t>(is.tellg());
 
                     is.read(reinterpret_cast<char*>(&u8), 1); // offset token
@@ -395,7 +395,7 @@ namespace Zeroconf
             
             for (auto& raw: responces)
             {
-                mdns_responce parsed = {0};
+                mdns_responce parsed = {};
                 if (Parse(raw, &parsed))
                     result->push_back(parsed);
             }
